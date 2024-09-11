@@ -1,0 +1,15 @@
+FROM webappio/php:8.0 # Imagen de PHP con las dependencias necesarias
+
+WORKDIR /var/www # Configura el directorio de trabajo dentro del contenedor
+
+COPY . . # Copia todo el contenido del proyecto al contenedor
+
+RUN composer install # Instala las dependencias de Laravel
+
+# Configura permisos para las carpetas de Laravel
+RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+
+EXPOSE 8000 # Expone el puerto 8000, donde correrá la aplicación
+
+# Ejecuta Laravel usando el servidor de desarrollo interno
+CMD php artisan serve --host=0.0.0.0 --port=8000
